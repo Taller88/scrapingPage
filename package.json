@@ -1,0 +1,29 @@
+{
+  "name": "scrapingpage",
+  "version": "0.0.1",
+  "description": "scraping을 하는 page",
+  "main": "app.js",
+  "scripts": {
+    "start": "cross-env NODE_ENV=production PORT=80 pm2 start app.js -i -",
+    "dev": "nodemon app"
+  },
+  "author": "jjw",
+  "license": "MIT",
+  "dependencies": {
+    "axios": "^0.26.0",
+    "cross-env": "^7.0.3",
+    "csurf": "^1.11.0",
+    "dotenv": "^16.0.0",
+    "express": "^4.17.3",
+    "helmet": "^5.0.2",
+    "hpp": "^0.2.3",
+    "morgan": "^1.10.0",
+    "nunjucks": "^3.2.3",
+    "pm2": "^5.2.0",
+    "sanitize-html": "^2.7.0",
+    "winston": "^3.6.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.15"
+  }
+}

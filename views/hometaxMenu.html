@@ -1,0 +1,31 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <title>hometaxMenu.html</title>
+
+</head>
+
+<body>
+    <h1>홈택스 메뉴</h1>
+    <br>
+        <h2>원하는 기능의 버튼을 클릭해주세요.</h2>
+    <br>
+    <form action="/hometax/okResponse" method="POST">
+        <input type="hidden" id = "postData" name = "postData" value={{postData}}>
+        <input type= "submit" value="소득조회">
+    </form>
+
+    <form action="/hometax/okResponse" method="POST">
+        <input type="hidden" id = "postData" name = "postData" value={{postData}}>
+        <input type= "submit" value="소득조회">
+    </form>
+
+    
+    <div class = "result"></div>
+
+
+</body>
+</html>

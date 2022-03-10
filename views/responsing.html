@@ -1,0 +1,26 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <title>main.html</title>
+
+</head>
+
+<body>
+  
+    <p>Response 대기 </p>
+    <br>
+        모바일 인증이 완료되면 'OK' 버튼을 클릭해주세요
+    <br>
+    <form action="/hometax/okResponse" method="POST">
+        <input type="hidden" id = "postData" name = "postData" value={{postData}}>
+        <input type= "submit" value="OK">
+    </form>
+
+    <div class = "result"></div>
+
+
+</body>
+</html>

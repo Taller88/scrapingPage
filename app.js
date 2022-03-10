@@ -2,11 +2,11 @@ const express = require('express');
 const nunjucks = require('nunjucks');
 const path = require('path');
 
-const helmet = require('helmet');
-const hpp = require('hpp');
+// const helmet = require('helmet');
+// const hpp = require('hpp');
+const morgan = require('morgan')
 
-
-const logger = require('./logger');
+// const logger = require('./logger');
 const indexRouter = require('./routes/index');
 const hometaxRouter = require('./routes/hometax');
 
@@ -18,8 +18,8 @@ nunjucks.configure('views',{
     watch:true
 })
 app.use(morgan('combined'));
-app.use(helmet({contentSecurityPolicy:false}));
-app.use(hpp());
+// app.use(helmet({contentSecurityPolicy:false}));
+// app.use(hpp());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(express.json())

@@ -11,6 +11,9 @@ router.post("/login", async(req, res, next)=>{
 
     const result = await Hometax.prototype.간편로그인(userName, userPhone, birth,userSsn2);
 
+    if(!result.resultCode){
+        next(result);
+    }
 
     if(result.resultCode === '200'){
         // console.log("로그인 성공")

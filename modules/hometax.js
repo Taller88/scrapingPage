@@ -78,7 +78,9 @@ Hometax.prototype.간편로그인 = async function(userName, userPhone, birth,us
         return result.data;
     }catch(err){
         console.error(err);
-        next(err)
+
+        return err
+        // next(err)// next(없음)
     }
 
     // try{

@@ -23,7 +23,7 @@ app.use(morgan('combined'));
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(express.json())
-app.use(express.urlencoded({extends:true}));
+app.use(express.urlencoded({extended:true}));
 app.use(cors({
     origin:true,
     credentials:true

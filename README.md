@@ -19,8 +19,20 @@ nodeJS 를 활용하여 홈택스 간편인증을 진행하고 소득조회를 �
     3. morgan
     4. nunjucks
     5. xml2js
+    6. dotenv
     
   * 배포환경
-    * AWS
+    * AWS - lightsail
     * 배포주소 
       * http://15.165.235.12/  
+
+## 구조 
+ > common
+ > modules
+ > public
+ > routes
+ > views
+ > .env
+ > app.js
+ > package.json
+ > package-lock.json

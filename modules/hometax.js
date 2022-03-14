@@ -1,6 +1,6 @@
 const axios = require('axios');
-const convert = require('xml-js');
-
+const xml2js = require('xml2js');
+const parser = new xml2js.Parser();
 const {cookieParser} = require('../common/commonFunc');
 
 function Hometax(){
@@ -352,12 +352,17 @@ Hometax.prototype.로그인완료 = async function(postData){
 }
 
 Hometax.prototype.현금영수증월별사용내역조회 = async function(month, lastDay){
-    const paramMonth = month>10?month:+"0"+month;
+    const paramMonth = Number(month)>=10?month:"0"+month;
+
     console.log("현금영수증월별사용내역조회: "+this.cookies);
 
     console.log("[Module] 현금영수증월별사용내역");
-    console.log(this.cookies);
+
+
     const tempHost = "https://tecr.hometax.go.kr"
+    var tecrCookie = "WMONID=s22GCkViJVI;";
+    tecrCookie+=this.cookies.substring(this.cookies.indexOf(';'))
+     
     this.header = {};
 
     this.header['sec-ch-ua'] ='" Not A;Brand";v="99", "Chromium";v="99", "Google Chrome";v="99"'
@@ -373,7 +378,7 @@ Hometax.prototype.현금영수증월별사용내역조회 = async function(month
     this.header['Referer'] ='https://tecr.hometax.go.kr/websquare/websquare.html?w2xPath=/ui/cr/c/b/UTECRCB001.xml'
     this.header['Accept-Encoding'] ='gzip, deflate, br'
     this.header['Accept-Language'] ='ko-KR,ko;q=0.9,en-US;q=0.8,en;q=0.7,ja;q=0.6'
-    this.header['Cookie'] = this.cookies;
+    this.header['Cookie'] = tecrCookie;
     this.postData = "<map id='postParam'><popupYn>false</popupYn></map>"
 
     var result = await axios({
@@ -384,7 +389,7 @@ Hometax.prototype.현금영수증월별사용내역조회 = async function(month
     });
     console.log("/permission.do?screenId=UTECRCB001");
     console.log(result.data);
-
+    tecrCookie+=cookieParser(result);
     this.cookies += cookieParser(result);
     // 2022_03_13
     const date = new Date()
@@ -405,16 +410,17 @@ Hometax.prototype.현금영수증월별사용내역조회 = async function(month
     this.header['Referer'] ='https://tecr.hometax.go.kr/'
     this.header['Accept-Encoding'] ='gzip, deflate, br'
     this.header['Accept-Language'] ='ko-KR,ko;q=0.9,en-US;q=0.8,en;q=0.7,ja;q=0.6'
-
+    this.header['Cookie']=this.cookies
     
     var result = await axios({
         method: 'GET',
-        url: this.host+"/token.do?query=_VNUnlqdZhXHK61XvSHYS&postfix="+today,
+        // url: this.host+"/token.do?query=_VNUnlqdZhXHK61XvSHYS&postfix="+today,
+        url: this.host+"/token.do?query=",
         headers:this.header
     });
     console.log("ssotoken")
     
-    var fIndex = result.data.indexOf("<ssoToken>");
+    var fIndex = result.data.indexOf("<ssoToken>")+10;
     var bIndex = result.data.indexOf("</ssoToken>");
     const ssoToken = result.data.substring(fIndex, bIndex);
     console.log(result.data);
@@ -476,7 +482,12 @@ Hometax.prototype.현금영수증월별사용내역조회 = async function(month
     console.log(result.data);
     fIndex = result.data.indexOf("gControl.result='")+17
     bIndex = result.data.indexOf("';")
-    console.log(result.data.substring(fIndex,bIndex))
+    console.log(result.data.substring(fIndex,bIndex));
+    console.log("Net: "+encodeURIComponent(result.data.substring(fIndex,bIndex)));
+    console.log("result.headers: "+JSON.stringify(result.headers));
+    console.log("result.headers['set-cookie']: "+result.headers['set-cookie']);
+    
+    
     this.cookies+='NetFunnel_ID='+encodeURIComponent(result.data.substring(fIndex,bIndex)+";");
 
     console.log("last this.cookies: "+this.cookies)
@@ -527,7 +538,9 @@ Hometax.prototype.현금영수증월별사용내역조회 = async function(month
     this.header['Accept-Encoding'] ='gzip, deflate, br'
     this.header['Accept-Language'] ='ko-KR,ko;q=0.9,en-US;q=0.8,en;q=0.7,ja;q=0.6'
     this.header['Cookie'] =this.cookies
-
+    console.log('2022'+paramMonth+'01');
+    console.log('2022'+paramMonth+''+lastDay);
+    
     const nts = '<nts<nts>nts>28usfxMt4GFTEoLayVhjDwnY3S4TXzGPa8h043jNqQY17'
     this.postData ='<map id="ATECRCBA001R01"><trsDtRngStrt>2022'+paramMonth+'01</trsDtRngStrt><trsDtRngEnd>2022'+paramMonth+''+lastDay+'</trsDtRngEnd><spjbTrsYn/><cshptUsgClCd/><sumTotaTrsAmt/></map>'
 
@@ -538,15 +551,35 @@ Hometax.prototype.현금영수증월별사용내역조회 = async function(month
         headers:this.header
     });
     this.cookies+=cookieParser(result);
+    console.log("this.cookies1: "+this.cookies)
     console.log("******************************************")
     console.log(result.data);
     console.log("******************************************")
-    var xmlToJson = convert.xml2json(result.data, {compact: true, spaces: 4});
-    console.log(JSON.stringify(xmlToJson));
-    var err = {};
-    err['status'] = 402;
-    err['errMsg'] = '세션정보가 존재하지 않습니다.'
-    return err;
+    // var xmlToJson = convert.xml2json(result.data, {compact: true, spaces: 4});
+    // parser.parseString(result.data, function(err, result){
+    //     console.log(result.map.list.map);
+    //     // console.log(result['map']['list']['map']);
+    //     const map = result.map.list.map;
+    //     for(var i =0; i<map.length; i++){
+    //         // console.log('가맹점명'+map[i].mrntTxprNm[0]);
+    //         // console.log('사용금액'+map[i].totaTrsAmt);
+    //         // console.log('거래일시: '+map[i].trsDtTime[0]);
+    //         console.log('가맹점명'+map[i]);
+    //         console.log('사용금액'+map[i]);
+    //         console.log('거래일시: '+map[i]);
+    //     }
+        
+    //     console.log(Object.keys(result));
+    // })
+    // console.log(xmlToJson);
+    // console.log(xmlToJson['map'][0]['resultMsg']);
+    var success = {};
+    success['status'] = 200;
+    success['data'] =result.data;
+    // var err = {};
+    // err['status'] = 402;
+    // err['errMsg'] = '세션정보가 존재하지 않습니다.'
+    return success;
     // console.log(xmlToJson['map']);
     
     // if(xmlToJson['map']['msg']['_text']==='세션정보가 존재하지 않습니다.'){

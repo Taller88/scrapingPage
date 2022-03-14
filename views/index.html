@@ -3,7 +3,8 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
+    <link rel="stylesheet" href="./css/style.css">
+
     <title>main.html</title>
 
 </head>
@@ -23,22 +24,30 @@
             }
         }
     </script>
-    <p>홈텍스 2020년 근로소득확인</p>
-    <form action="/hometax/login" method="POST">
-        <input type="text" name = "userName" placeholder="이름 입력"/>
-        <br/>
-        <input type="text" name = "phoneNum" placeholder="연락처 입력"/>
-        <br/>
-        <input type="text" name = "birth" placeholder="생년월일입력 (ex.19990616)"/>
-        -
-        <input type="hidden" name = "errMsg" id ="errMsg" value = {{errMsg}}/>
-        <br/>
-        <input type= "submit">
+    
+    <div id="indexForm"> 
         
-    </form>
+            
+        <form action="/hometax/login" method="POST" class="form-style-1">
+            <b>홈텍스 2022년 API Sample</b><br>
+            <b id ="subB">홈텍스 간편인증 로그인</b><br><br>
+            <input type="text" name = "userName" placeholder="이름 입력"/>
+            <br/>
+            <br>
+            <input type="text" name = "phoneNum" placeholder="연락처 입력"/>
+            <br/>
+            <br>
+            <input type="text" name = "birth" placeholder="생년월일(yyyymmdd)"/>
+            <br>
+            <input type="hidden" name = "errMsg" id ="errMsg" value = {{errMsg}}/>
+            <br/>
+            <input type= "submit">
+
+        </form>
+    </div>
     <br>
     
-    <p>공동인증서 목록조회</p>
+    <!-- <p>공동인증서 목록조회</p>
     <form action="/certSelect" method="POST">
         <br/>
         <input type= "submit" value = "조회">
@@ -47,49 +56,16 @@
     <form action="/musinsa" method="POST">
         <br/>
         <input type= "submit" value = "조회">
-    </form>
+    </form> -->
     
    
-    <div class = "result"></div>
+    
 
     <script>
-        var host = "https://www.hometax.go.kr"
-        var path = "/gpin/v1/request_tx"
-
-        document.querySelector('.ajaxsend').addEventListener('click', function(){
-            var inputData = document.forms[0].elements[0].value;
-            //localhost로 접근하니까 에러나네...?..
-            sendAjax("http://127.0.0.1:3000/ajax_send_email",inputData);
-        })
-
-        document.querySelector(".ajaxsend2").addEventListener('click', function(){
-            console.log("test")
-        });
-
-        function sendAjax(url, data){
-            
-            var params = {'signTarget' : ''};
-            var xhr = new XMLHttpRequest();
-            // open의 첫번째 인자로 method, 그 다음 url 
-            xhr.open('POST', url);
-            // header 값을 밑에 형식으로 ..
-            // xhr.setRequestHeader('Content-Type',"application/json");
-            data = JSON.stringify(data);
-            console.log(data);
-            // send의 데이터형은 문자열 데이터 형식으로 -> JSON.stringify
-            xhr.send(data);
-
-            //응답이 제대로 왔을때 
-            xhr.addEventListener('load',function(){
-                //이건 응답값이 문자열로 오니까 JSON으로 parsing해줘야함
-                var result = JSON.parse(xhr.responseText);
-                if(result.result !== "ok")return;
-                //querySelector는 아마 html 에서 class 를 찾는듯?
-                document.querySelector(".result").innerHTML = result;
-            })
+        window.onload = function(){
+            alert("안녕하세요. 토스 지원자 정진우입니다.");
         }
-
-      
+        
 </script>
 
 </body>

@@ -3,26 +3,45 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
-    <title>hometaxMenu.html</title>
-
+    <script src="//code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script src="./lib/jquery/jquery-1.12.4.min.js"></script>
+    <link rel="stylesheet" href="../css/style.css">
 </head>
 
 <body>
-    <h1>홈택스 메뉴</h1>
+    <h1>홈택스 API</h1>
     <br>
         <h2>{{user}}님 원하는 기능의 버튼을 클릭해주세요.</h2>
     <br>
-    <form action="/hometax/cashReceipt" method="POST">
-        <b>22년 현금영수증 월별 사용내역조회</b>
-        <select name = "month"> 
+    <!-- <form action="/hometax/cashReceipt" method="POST"> -->
+        <div class = "inner">
+        <b>1. 22년 현금영수증 월별 사용내역조회</b>
+        <select name = "month" id = "month"> 
             <option value="1">1월</option> 
             <option value="2">2월</option> 
             <option value="3">3월</option> 
         </select>
-        <input type= "submit" value="조회">
-    </form>
+        <button id="selectReceipt">조회</button>
+        </div>
+        <!-- <input type= "submit" value="조회"> -->
+    <!-- </form> -->
+    <div id = "receiptDiv">
+        <table id = "receiptTable">
+            <thead>
+                <th>사용처</th>
+                <th>금액</th>
+                <th>시간</th>
+            </thead>
+           <tbody id = 'receiptList'>
+           </tbody>
+        </table>
+    </div>
+    <hr/>
+    <div class = "inner">
+    <b>2. 22년 소득내역조회</b>
+    <button id="selectEarn">조회</button>
     <input type="hidden" name="errMsg" id="errMsg" value="{{errMsg}}"/>
+    </div>
     <script>
         window.onload = function(){
             const err = decodeURIComponent(document.getElementById('errMsg').value);
@@ -30,9 +49,52 @@
             if(err){
                 alert(err)
             }
+           
+
         }
     </script>
-    
+    <script>
+        $("#selectEarn").click(function(){
+            alert("open 준비중입니다..")
+        });
+        $("#selectReceipt").click(function(){
+            const param = {month:document.getElementById('month').value}
+            console.log(param);
+             
+
+                $.ajax({ url: '/hometax/cashReceipt', // 읽어올 문서 
+                    type: 'post', // 방식 
+                    data: param,
+                    async:false,
+                    dataType: 'xml', // 문서 타입 
+                    error: function(e){ // 로딩 에러시 
+                        console.log(JSON.stringify(e))
+                        alert('Error loading XML document: '); 
+                    }, 
+                    success: function(xml){
+                        console.log("xml load succ")
+                         $(xml).find('map').find('list').find("map").each(function(){ // xml 문서 item 기준으로 분리후 반복 
+                            
+                            var company = $(this).find("mrntTxprNm").text(); 
+                            var timeVal = $(this).find("trsDtTime").text(); 
+                            var pay = $(this).find("totaTrsAmt").text(); 
+                            // var tag = $(this).find("map").find("mrntTxprNm").text(); 
+                            // var view_text = company + timeVal + pay ;
+                            var trData = '<tr>'
+                            trData += '<td>'+company+'</td>'
+                            trData += '<td>'+pay+'</td>'
+                            trData += '<td>'+timeVal+'</td>'
+                            trData += '</tr>'
+                            $("#receiptList").append(trData);
+                            // console.log(view_text);
+                        }); 
+                    } 
+                });
+
+        })
+
+
+    </script>
     <div class = "result"></div>
 
 

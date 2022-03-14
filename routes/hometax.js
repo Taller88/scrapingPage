@@ -32,6 +32,7 @@ router.post("/login", async(req, res, next)=>{
     }
 
 })
+
 router.post("/okResponse", async(req, res, next)=>{
     try{
      
@@ -69,13 +70,18 @@ router.get("/cashReceipt", async(req, res, next)=>{
 });
 router.post("/cashReceipt", async(req, res, next)=>{
     try{
-
+        
         console.log("현금영수증 월별 사용내역조회");
-        const month = Number(req.params.month);
+        console.log(JSON.stringify(req.body));
+        const month = Number(req.body.month);
+        console.log("router month: "+month)
         const lastDay =new Date(2022, month,0).getDate();
         var result = await Hometax.prototype.현금영수증월별사용내역조회(month, lastDay);
         console.log(result['status']);
-        if(result['status']=== 402){
+        if(result['status']=== 200){
+            res.setHeader("Content-type", "text/xml");
+            res.status(200).send(result['data']);
+        }else if(result['status']=== 402){
             return res.redirect('/hometax/cashReceipt?errMsg='+encodeURIComponent(result['errMsg']));
         }
     }catch(err){

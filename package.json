@@ -18,7 +18,8 @@
     "morgan": "^1.10.0",
     "nunjucks": "^3.2.3",
     "sanitize-html": "^2.7.0",
-    "xml-js": "^1.6.11"
+    "xml-js": "^1.6.11",
+    "xml2js": "^0.4.23"
   },
   "devDependencies": {
     "nodemon": "^2.0.15"

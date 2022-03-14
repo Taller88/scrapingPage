@@ -528,7 +528,8 @@ Hometax.prototype.현금영수증월별사용내역조회 = async function(month
     this.header['Accept-Language'] ='ko-KR,ko;q=0.9,en-US;q=0.8,en;q=0.7,ja;q=0.6'
     this.header['Cookie'] =this.cookies
 
-    this.postData ='<map id="ATECRCBA001R01"><trsDtRngStrt>2022'+paramMonth+'01</trsDtRngStrt><trsDtRngEnd>2022'+paramMonth+''+lastDay+'</trsDtRngEnd><spjbTrsYn/><cshptUsgClCd/><sumTotaTrsAmt/></map><nts<nts>nts>28usfxMt4GFTEoLayVhjDwnY3S4TXzGPa8h043jNqQY17'
+    const nts = '<nts<nts>nts>28usfxMt4GFTEoLayVhjDwnY3S4TXzGPa8h043jNqQY17'
+    this.postData ='<map id="ATECRCBA001R01"><trsDtRngStrt>2022'+paramMonth+'01</trsDtRngStrt><trsDtRngEnd>2022'+paramMonth+''+lastDay+'</trsDtRngEnd><spjbTrsYn/><cshptUsgClCd/><sumTotaTrsAmt/></map>'
 
     var result = await axios({
         method: 'POST',

@@ -28,15 +28,20 @@ nodeJS 를 활용하여 홈택스 간편인증을 진행하고 소득조회를 �
 
 ## 구조 
  > common
- 
+ >  > commonFunc.js
  > modules
- 
+ >  > hometax.js 
  > public
- 
+ >  > css
+ >  > lib
  > routes
- 
+ >  > hometax.js
+ >  > index.js
  > views
- > 
+ >  > index.html
+ >  > resposing.html
+ >  > hometaxMenu.html
+ >  > error.html
  > .env
  > app.js
  > package.json

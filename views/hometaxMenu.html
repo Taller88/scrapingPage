@@ -11,18 +11,27 @@
 <body>
     <h1>홈택스 메뉴</h1>
     <br>
-        <h2>원하는 기능의 버튼을 클릭해주세요.</h2>
+        <h2>{{user}}님 원하는 기능의 버튼을 클릭해주세요.</h2>
     <br>
-    <form action="/hometax/okResponse" method="POST">
-        <input type="hidden" id = "postData" name = "postData" value={{postData}}>
-        <input type= "submit" value="소득조회">
+    <form action="/hometax/cashReceipt" method="POST">
+        <b>22년 현금영수증 월별 사용내역조회</b>
+        <select name = "month"> 
+            <option value="1">1월</option> 
+            <option value="2">2월</option> 
+            <option value="3">3월</option> 
+        </select>
+        <input type= "submit" value="조회">
     </form>
-
-    <form action="/hometax/okResponse" method="POST">
-        <input type="hidden" id = "postData" name = "postData" value={{postData}}>
-        <input type= "submit" value="소득조회">
-    </form>
-
+    <input type="hidden" name="errMsg" id="errMsg" value="{{errMsg}}"/>
+    <script>
+        window.onload = function(){
+            const err = decodeURIComponent(document.getElementById('errMsg').value);
+            // alert(err)
+            if(err){
+                alert(err)
+            }
+        }
+    </script>
     
     <div class = "result"></div>
 

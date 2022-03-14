@@ -10,8 +10,17 @@
 
 <body>
     <script>
-          function buttonTest(){
-            console.log("test")
+        
+        window.onload = function(){
+            const errMsg = document.getElementById("errMsg").value;
+            // alert(errMsg)
+            if(errMsg !== "/"){
+                if(errMsg==="invalidInfo/"){
+                    alert("입력하신 정보가 올바르지 않습니다.")
+                }else if(errMsg==="notComplete/"){
+                    alert("인증완료 후에 버튼을 클릭해주세요")
+                }
+            }
         }
     </script>
     <p>홈텍스 2020년 근로소득확인</p>
@@ -22,27 +31,13 @@
         <br/>
         <input type="text" name = "birth" placeholder="생년월일입력 (ex.19990616)"/>
         -
-        <input type="hidden" name = "ssn2"/>
+        <input type="hidden" name = "errMsg" id ="errMsg" value = {{errMsg}}/>
         <br/>
         <input type= "submit">
         
     </form>
     <br>
-    <br>
-    <p>정부24</p>
-    <form action="/goverment" method="POST">
-        <input type="text" name = "userName" placeholder="이름 입력"/>
-        <br/>
-        <input type="text" name = "phoneNum" placeholder="연락처 입력"/>
-        <br/>
-        <input type="text" name = "ssn1" placeholder="주민번호 앞자리 입력"/>
-        -
-        <input type="text" name = "ssn2" placeholder="주민번호 뒷자리 입력"/>
-        <br/>
-        <input type= "submit">
-        
-    </form>
-    <br>
+    
     <p>공동인증서 목록조회</p>
     <form action="/certSelect" method="POST">
         <br/>
@@ -54,12 +49,7 @@
         <input type= "submit" value = "조회">
     </form>
     
-    <input type="button" id="button1" onclick="button1_click('hello');" value="버튼1" />
-<script>
-function button1_click(s) {
-	console.log(s+"버튼1을 누르셨습니다.");
-}
-</script>
+   
     <div class = "result"></div>
 
     <script>

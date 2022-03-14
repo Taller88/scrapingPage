@@ -2,7 +2,13 @@ const express = require('express');
 const router = express.Router();
 
 router.get("/", async(req, res, next)=>{
-    res.render('index');
+    // console.log(req.query.err);
+
+    if(req.query.err){
+        console.log(req.query.err)
+        return res.render('index', {errMsg:req.query.err})
+    }
+    return res.render('index',{errMsg:""});
 })
 
 router.get("/responsing", (req, res, next)=>{

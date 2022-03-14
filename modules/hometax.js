@@ -4,7 +4,7 @@ const convert = require('xml-js');
 const {cookieParser} = require('../common/commonFunc');
 
 function Hometax(){
-    this.cookies ="";
+    // this.cookies ="";
 };
 // Hometax.prototype = Object.create()
 Hometax.prototype.간편로그인 = async function(userName, userPhone, birth){
@@ -31,7 +31,9 @@ Hometax.prototype.간편로그인 = async function(userName, userPhone, birth){
             method:'GET',
             url:this.host,
             headers:this.header
-        })
+        });
+        
+        console.log(cookieParser(result));
         this.cookies = cookieParser(result)+"nts_homtax:zoomVal=100; nts_hometax:pkckeyboard=none"
 
         console.log("1: "+this.cookies);
@@ -469,41 +471,43 @@ Hometax.prototype.현금영수증월별사용내역조회 = async function(month
         url: 'https://apct.hometax.go.kr/ts.wseq?opcode=5101&nfid=0&prefix=NetFunnel.gRtype=5101;&sid=service_2&aid=ATECR_SEARCH&js=yes&'+todayInt,
         headers:this.header
     });
-    console.log("NetFunnel_ID")
+    
+    console.log("NetFunnel_ID");
     console.log(result.data);
-    fIndex = result.data.indexOf("gControl.result='")
+    fIndex = result.data.indexOf("gControl.result='")+17
     bIndex = result.data.indexOf("';")
     console.log(result.data.substring(fIndex,bIndex))
-    this.cookies+='NetFunnel_ID='+encodeURIComponent(result.data.substring(fIndex,bIndex));
+    this.cookies+='NetFunnel_ID='+encodeURIComponent(result.data.substring(fIndex,bIndex)+";");
 
-    var common_te_URL = '/js/comm/ui/common_te-min.js?postfix=' + today
+    console.log("last this.cookies: "+this.cookies)
+    // var common_te_URL = '/js/comm/ui/common_te-min.js?postfix=' + today
     
 
-    this.header ={}
-    this.header['Connection'] ='keep-alive'
-    this.header['sec-ch-ua'] ='" Not A;Brand";v="99", "Chromium";v="99", "Google Chrome";v="99"'
-    this.header['sec-ch-ua-mobile'] ='?0'
-    this.header['User-Agent'] ='Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.51 Safari/537.36'
-    this.header['sec-ch-ua-platform'] ='"Windows"'
-    this.header['Accept'] ='*/*'
-    this.header['Sec-Fetch-Site'] ='same-site'
-    this.header['Sec-Fetch-Mode'] ='no-cors'
-    this.header['Sec-Fetch-Dest'] ='script'
-    // this.header['Referer'] ='https://tecr.hometax.go.kr/'
-    this.header['Accept-Encoding'] ='gzip, deflate, br'
-    this.header['Accept-Language'] ='ko-KR,ko;q=0.9,en-US;q=0.8,en;q=0.7,ja;q=0.6'
+    // this.header ={}
+    // this.header['Connection'] ='keep-alive'
+    // this.header['sec-ch-ua'] ='" Not A;Brand";v="99", "Chromium";v="99", "Google Chrome";v="99"'
+    // this.header['sec-ch-ua-mobile'] ='?0'
+    // this.header['User-Agent'] ='Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.51 Safari/537.36'
+    // this.header['sec-ch-ua-platform'] ='"Windows"'
+    // this.header['Accept'] ='*/*'
+    // this.header['Sec-Fetch-Site'] ='same-site'
+    // this.header['Sec-Fetch-Mode'] ='no-cors'
+    // this.header['Sec-Fetch-Dest'] ='script'
+    // // this.header['Referer'] ='https://tecr.hometax.go.kr/'
+    // this.header['Accept-Encoding'] ='gzip, deflate, br'
+    // this.header['Accept-Language'] ='ko-KR,ko;q=0.9,en-US;q=0.8,en;q=0.7,ja;q=0.6'
 
 
-    var result = await axios({
-        method: 'GET',
-        url: this.tempHost + common_te_URL,
-        headers:this.header
-    });
-    var common_teJS = result.data;
-    eval(common_teJS +
-        '  var az = k.k7();  ' +
-        '  var encValue = "<nts<nts>nts>" + (Number(az) + 11) + k.k4(reqData, az) + az;');
-    console.log('encValue : ' + encValue);
+    // var result = await axios({
+    //     method: 'GET',
+    //     url: this.tempHost + common_te_URL,
+    //     headers:this.header
+    // });
+    // var common_teJS = result.data;
+    // eval(common_teJS +
+    //     '  var az = k.k7();  ' +
+    //     '  var encValue = "<nts<nts>nts>" + (Number(az) + 11) + k.k4(reqData, az) + az;');
+    // console.log('encValue : ' + encValue);
 
 
     this.header = {};
@@ -524,7 +528,7 @@ Hometax.prototype.현금영수증월별사용내역조회 = async function(month
     this.header['Accept-Language'] ='ko-KR,ko;q=0.9,en-US;q=0.8,en;q=0.7,ja;q=0.6'
     this.header['Cookie'] =this.cookies
 
-    this.postData ='<map id="ATECRCBA001R01"><trsDtRngStrt>2022'+paramMonth+'01</trsDtRngStrt><trsDtRngEnd>2022'+paramMonth+''+lastDay+'</trsDtRngEnd><spjbTrsYn/><cshptUsgClCd/><sumTotaTrsAmt/></map>'+encValue
+    this.postData ='<map id="ATECRCBA001R01"><trsDtRngStrt>2022'+paramMonth+'01</trsDtRngStrt><trsDtRngEnd>2022'+paramMonth+''+lastDay+'</trsDtRngEnd><spjbTrsYn/><cshptUsgClCd/><sumTotaTrsAmt/></map><nts<nts>nts>28usfxMt4GFTEoLayVhjDwnY3S4TXzGPa8h043jNqQY17'
 
     var result = await axios({
         method: 'POST',
@@ -537,7 +541,19 @@ Hometax.prototype.현금영수증월별사용내역조회 = async function(month
     console.log(result.data);
     console.log("******************************************")
     var xmlToJson = convert.xml2json(result.data, {compact: true, spaces: 4});
-    conosle.log(JSON.stringify(xmlToJson));
+    console.log(JSON.stringify(xmlToJson));
+    var err = {};
+    err['status'] = 402;
+    err['errMsg'] = '세션정보가 존재하지 않습니다.'
+    return err;
+    // console.log(xmlToJson['map']);
+    
+    // if(xmlToJson['map']['msg']['_text']==='세션정보가 존재하지 않습니다.'){
+    //     var err = {};
+    //     err['status'] = 402;
+    //     err['msg'] = xmlToJson['map']['msg']['_text']
+    //     return 
+    // }
 }
 
 module.exports = Hometax;

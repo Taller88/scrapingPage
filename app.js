@@ -5,13 +5,13 @@ const path = require('path');
 // const helmet = require('helmet');
 // const hpp = require('hpp');
 const morgan = require('morgan')
-
+const cors = require('cors')
 // const logger = require('./logger');
 const indexRouter = require('./routes/index');
 const hometaxRouter = require('./routes/hometax');
 
 const app = express();
-app.set('port', process.env.ports||80);
+app.set('port', process.env.ports||8000);
 app.set('view engine','html');
 nunjucks.configure('views',{
     express:app,
@@ -24,7 +24,10 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(express.json())
 app.use(express.urlencoded({extends:true}));
-
+app.use(cors({
+    origin:true,
+    credentials:true
+}))
 
 app.use('/',indexRouter);
 app.use('/hometax',hometaxRouter);
@@ -32,8 +35,8 @@ app.use('/hometax',hometaxRouter);
 app.use((req, res, next)=>{
     const error = new Error("404 url 주소를 잘못 입력하셨습니다.")
     error.status = 404
-    logger.info('hello');
-    logger.error(error.message);
+    // logger.info('hello');
+    // logger.error(error.message);
     next(err);
 })
 

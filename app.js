@@ -11,7 +11,7 @@ const indexRouter = require('./routes/index');
 const hometaxRouter = require('./routes/hometax');
 
 const app = express();
-app.set('port', process.env.ports||8000);
+app.set('port', process.env.ports||80);
 app.set('view engine','html');
 nunjucks.configure('views',{
     express:app,
